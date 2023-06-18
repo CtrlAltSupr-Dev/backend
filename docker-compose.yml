@@ -1,0 +1,40 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    volumes:
+      - backend_db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - my-network-name
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: .
+    volumes:
+      - .:/app
+    env_file:
+      - ./src/.env
+    ports:
+      - "8000:8000"
+    command: sh -c "python src/manage.py migrate && python src/manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - my-network-name
+networks:
+  my-network-name:
+    driver: bridge
+
+volumes:
+  backend_db:
