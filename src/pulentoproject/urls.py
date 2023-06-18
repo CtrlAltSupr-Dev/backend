@@ -20,5 +20,8 @@ from api import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path(r'^api/$', views.api_greet)
+    re_path(r'^api/$', views.api_greet),
+    path('register/', views.register, name='register'),
+    path('activate/<str:uidb64>/<str:token>/', views.activate_account, name='activate'),
+    path('test-email-verification/', views.test_email_verification, name='test_email_verification'),
 ]
