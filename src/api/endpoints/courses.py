@@ -11,6 +11,7 @@ def get_courses(request):
     return Response(serializer.data)
 
 
+@api_view(['GET'])
 def get_course(request, pk=None):
     data = Course.objects.get(pk=pk)
     serializer = CourseSerializer(data, context={'request': request})
