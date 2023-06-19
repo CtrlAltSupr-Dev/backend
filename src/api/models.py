@@ -14,6 +14,13 @@ class Teacher(models.Model):
         return self.name
 
 
+class Course(models.Model):
+    # TODO: has_many Teachers
+    name = models.CharField("Name", max_length=240)
+    description = models.TextField("Description")
+    initials = models.CharField("Name", max_length=240)
+
+
 class CustomUser(AbstractUser):
     email_verified = models.BooleanField(default=False)
     groups = models.ManyToManyField(

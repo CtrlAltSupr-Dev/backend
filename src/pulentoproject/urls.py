@@ -16,11 +16,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path
-from api import views
+from api import views, endpoints
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     re_path(r'^api/$', views.api_greet),
+    re_path(r'^api/teachers$', endpoints.get_teachers),
+    re_path(r'^api/teachers/details/([0-9])$', endpoints.get_teacher),
+    re_path(r'^api/courses$', endpoints.get_courses),
+    re_path(r'^api/courses/details/([0-9])$', endpoints.get_course),
     path('register/', views.register, name='register'),
     path('activate/<str:uidb64>/<str:token>/', views.activate_account, name='activate'),
     path('test-email-verification/', views.test_email_verification, name='test_email_verification'),
