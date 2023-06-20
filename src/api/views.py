@@ -7,6 +7,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from django.http import HttpResponse, JsonResponse
@@ -30,13 +31,9 @@ def api_greet(request):
 @api_view(["POST"])
 @csrf_exempt
 def register(request):
-    print('IS VALID')
     if request.method == 'POST':
         form = RegistrationForm(request.data)
-        print(f"request: {request.data}")
-        print(form)
         if form.is_valid():
-            print('VALID')
             user = form.save()
             user.is_active = False
             user.save()
@@ -93,3 +90,25 @@ def test_email_verification(request):
 
     send_mail(subject, message, from_email, recipient_list)
     return HttpResponse('Correo de prueba enviado')
+
+@api_view(["POST"])
+@csrf_exempt
+def login_view(request):
+    if request.method == 'POST':
+        username = request.data["username"]
+        password = request.data["password"]
+        print(f"username: {username}")
+        print(f"password: {password}")
+        print(f"request.data: {request.data}")
+        user = authenticate(request, username=username, password=password)
+        print(f"user: {user}")
+        if user is not None:
+            if user.is_active == False:
+                return JsonResponse({'error': 'La cuenta no está activa.'}, status=401)
+            login(request, user)
+            return JsonResponse({'user_id': user.id})
+        else:
+            return JsonResponse({'error': 'Credenciales inválidas.', 'request' : request.data}, status=401)
+    else:
+        return JsonResponse({'error': 'Método no permitido.'}, status=405)
+    
