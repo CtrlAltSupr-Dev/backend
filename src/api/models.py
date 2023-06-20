@@ -9,6 +9,7 @@ class Teacher(models.Model):
     ratingCommunication = models.IntegerField()
     ratingMaterial = models.IntegerField()
     addedDate = models.DateField("Added Date", auto_now_add=True)
+    courses = models.ManyToManyField('Course')
 
     def __str__(self):
         return self.name
@@ -19,6 +20,7 @@ class Course(models.Model):
     name = models.CharField("Name", max_length=240)
     description = models.TextField("Description")
     initials = models.CharField("Name", max_length=240)
+    teachers = models.ManyToManyField('Teacher')
 
 
 class CustomUser(AbstractUser):
