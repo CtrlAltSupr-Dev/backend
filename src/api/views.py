@@ -51,6 +51,7 @@ def register(request):
                 'domain': current_site.domain,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': default_token_generator.make_token(user),
+                'google': 'google.com',
             })
 
             # Configurar el contenido del correo electrónico como HTML y texto plano
@@ -72,7 +73,7 @@ def register(request):
 
 def activate_account(request, uidb64, token):
     try:
-        uid = force_str(urlsafe_base64_decode(uidb64))
+        uid = urlsafe_base64_decode(uidb64).decode()
         user = CustomUser.objects.get(pk=uid)
     except (TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
         user = None
@@ -80,9 +81,9 @@ def activate_account(request, uidb64, token):
     if user is not None and default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()
-        return render(request, 'registration/account_activated.html')
+        return JsonResponse({'message': 'Account activation successful.'})
     else:
-        return render(request, 'registration/activation_failed.html')
+        return JsonResponse({'error': 'Invalid activation link.'}, status=400)
     
 def test_email_verification(request):
     subject = 'Correo de verificación'
