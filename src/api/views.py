@@ -27,6 +27,7 @@ def api_greet(request):
     serializer = TeacherSerializer(data, context={'request': request}, many=True)
     return Response(serializer.data)
 
+
 @api_view(["POST"])
 @csrf_exempt
 def register(request):
