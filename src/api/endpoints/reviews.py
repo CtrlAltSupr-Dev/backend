@@ -21,10 +21,25 @@ def get_review(request, pk=None):
 
 @api_view(['POST'])
 def create_review(request):
-    serializer = ReviewSerializer(data=request.data)
+    serializer = ReviewSerializer(data=request.data, context={'request': request})
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data,status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
                     
 
+@api_view(['DELETE'])
+def delete_review(request, pk=None):
+    data = Review.objects.get(pk=pk)
+    data.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['PUT'])
+def update_review(request, pk=None):
+    data = Review.objects.filter(pk=pk)
+    serializer = ReviewSerializer(data, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)

@@ -29,7 +29,8 @@ urlpatterns = [
     re_path(r'^api/reviews$', endpoints.get_reviews),
     re_path(r'^api/reviews/details/([0-9])$', endpoints.get_review),
     re_path(r'^api/reviews/create$', endpoints.create_review),
-    # edit y delete review
+    re_path(r'^api/reviews/update/([0-9])$', endpoints.update_review),
+    re_path(r'^api/reviews/delete/([0-9])$', endpoints.delete_review),
     path('register/', views.register, name='register'),
     path('activate/<str:uidb64>/<str:token>/', views.activate_account, name='activate'),
     path('test-email-verification/', views.test_email_verification, name='test_email_verification'),
