@@ -7,7 +7,9 @@ from ..serializers import *
 @api_view(['GET'])
 def get_courses(request):
     data = Course.objects.all()
+    print("Data:", data)
     serializer = CourseSerializer(data, context={'request': request}, many=True)
+    print("Serializado: ", serializer)
     return Response(serializer.data)
 
 

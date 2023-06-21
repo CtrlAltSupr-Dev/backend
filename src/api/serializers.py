@@ -19,9 +19,9 @@ class CourseSerializer(serializers.ModelSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    teacher = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    course = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
+    teacher = serializers.PrimaryKeyRelatedField(read_only=True)
+    course = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = Review
