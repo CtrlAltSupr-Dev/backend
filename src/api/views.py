@@ -76,9 +76,10 @@ def activate_account(request, uidb64, token):
         user = None
 
     if user is not None and default_token_generator.check_token(user, token):
+        user.email_verified = True
         user.is_active = True
         user.save()
-        return JsonResponse({'message': 'Account activation successful.'})
+        return JsonResponse({'message': 'Account activation successful.', 'user.email_verified' : user.email_verified, 'user_id': user.id, 'user.is_active': user.is_active})
     else:
         return JsonResponse({'error': 'Invalid activation link.'}, status=400)
     

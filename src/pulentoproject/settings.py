@@ -14,6 +14,7 @@ from pathlib import Path
 
 from decouple import config
 
+
 SECRET_KEY = config('SECRET_KEY')
 
 
@@ -120,6 +121,12 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
+]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'django.contrib.auth.backends.AllowAllUsersModelBackend',
+    'api.backends.CustomUserBackend',
 ]
 
 
