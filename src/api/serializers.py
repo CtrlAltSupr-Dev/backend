@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Teacher, Course
+from .models import Teacher, Course, Review
 
 
 class TeacherSerializer(serializers.ModelSerializer):
@@ -16,3 +16,13 @@ class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = ('pk', 'name', 'description', 'initials', 'teachers')
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    teacher = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    course = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+
+    class Meta:
+        model = Review
+        fields = ('pk', 'user', 'teacher', 'course', 'ratingOrganization', 'ratingClass', 'ratingMaterial', 'comment', 'addedDate')
