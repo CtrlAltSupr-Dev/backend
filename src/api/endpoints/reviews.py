@@ -7,14 +7,20 @@ from ..serializers import *
 
 @api_view(['GET'])
 def get_reviews(request):
-    data = Review.objects.all()
+    try:
+        data = Review.objects.all()
+    except Review.DoesNotExist:
+        return Response({"mensaje": "There are no reviews yet"}, status=404)
     serializer = ReviewSerializer(data, context={'request': request}, many=True)
     return Response(serializer.data)
 
 
 @api_view(['GET'])
 def get_review(request, pk=None):
-    data = Review.objects.get(pk=pk)
+    try:
+        data = Review.objects.get(pk=pk)
+    except Review.DoesNotExist:
+        return Response({"mensaje": "Review does not exist"}, status=404)
     serializer = ReviewSerializer(data, context={'request': request})
     return Response(serializer.data)
 
@@ -30,7 +36,10 @@ def create_review(request):
 
 @api_view(['DELETE'])
 def delete_review(request, pk=None):
-    data = Review.objects.get(pk=pk)
+    try:
+        data = Review.objects.get(pk=pk)
+    except Review.DoesNotExist:
+        return Response({"mensaje": "Review does not exist"}, status=404)
     data.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
 
