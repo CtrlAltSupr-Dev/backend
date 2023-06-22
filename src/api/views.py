@@ -41,6 +41,8 @@ def api_greet(request):
 def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.data)
+        print(request.data)
+        print(form.is_valid())
         if form.is_valid():
             user = form.save()
             user.is_active = False
