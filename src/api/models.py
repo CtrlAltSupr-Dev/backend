@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-
 class Teacher(models.Model):
     # TODO: has_many courses
     name = models.CharField("Name", max_length=240)
@@ -24,8 +23,7 @@ class Course(models.Model):
 
     def __str__(self):
         return self.name
-
-
+      
 class CustomUser(AbstractUser):
     email_verified = models.BooleanField(default=False)
     groups = models.ManyToManyField(
@@ -42,7 +40,6 @@ class CustomUser(AbstractUser):
         help_text='Specific permissions for this user.',
         verbose_name='user permissions',
     )
-
 
 class Review(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
