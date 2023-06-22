@@ -22,10 +22,10 @@ jobs:
           sudo chmod +x /usr/local/bin/docker-compose
 
       - name: Run Docker Compose and tests
-        run: docker-compose -f docker-compose.yml up -d --build
+        run: docker compose -f docker-compose.yml up -d --build
       
       - name: Wait for the service to be ready
-        run: docker ps && docker --version && docker-compose -v
+        run: docker ps && docker --version && docker compose -v
 
       - name: Run tests
-        run: docker-compose exec backend python3 src/manage.py test api
+        run: docker compose exec backend python3 src/manage.py test api
