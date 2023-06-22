@@ -15,8 +15,5 @@ jobs:
       - name: Checkout GitCode
         uses: actions/checkout@v2
 
-      - name: Run Docker Compose
-        run: docker compose -f docker-compose.yml up -d --build   
-
-      - name: Run Test
-        run: docker compose exec backend python src/manage.py test api
+      - name: Run Docker Compose and tests
+        run: docker compose -f docker-compose.yml up -d --build  &&  docker compose exec backend python src/manage.py test api
