@@ -14,17 +14,12 @@ jobs:
     steps:
       - name: Checkout GitCode
         uses: actions/checkout@v2
-      
-      - name: Set up Docker
-        uses: docker/setup-docker@v2
-        with:
-          version: 20.10.17  # Specify the desired Docker version here
 
       - name: Run Docker Compose and tests
-        run: docker compose -f docker-compose.yml up -d --build
+        run: docker-compose -f docker-compose.yml up -d --build
       
       - name: Wait for the service to be ready
-        run: docker ps
+        run: docker ps && docker --version && docker-compose -v
 
       - name: Run tests
-        run: docker compose exec backend python3 src/manage.py test api
+        run: docker-compose exec backend python3 src/manage.py test api
