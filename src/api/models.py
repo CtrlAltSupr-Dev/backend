@@ -56,4 +56,4 @@ class Review(models.Model):
     addedDate = models.DateField("Added Date", auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.id} | {self.course.name}"
+        return f"User:{self.user.id} | {self.course.name}"

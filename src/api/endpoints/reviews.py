@@ -21,7 +21,7 @@ def get_review(request, pk=None):
 
 @api_view(['POST'])
 def create_review(request):
-    serializer = ReviewSerializer(data=request.data, context={'request': request})
+    serializer = ReviewSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data,status=status.HTTP_201_CREATED)
@@ -37,8 +37,12 @@ def delete_review(request, pk=None):
 
 @api_view(['PUT'])
 def update_review(request, pk=None):
-    data = Review.objects.filter(pk=pk)
-    serializer = ReviewSerializer(data, data=request.data)
+    try:
+        data = Review.objects.get(pk=pk)
+    except Review.DoesNotExist:
+        return Response({"mensaje": "Review does not exist"}, status=404)
+    
+    serializer = ReviewSerializer(data, data=request.data, partial=True)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)
