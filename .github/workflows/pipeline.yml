@@ -3,7 +3,7 @@ name: Deployment
 on:
   push:
     branches:
-      - main
+      - test/cd
 
 jobs:
   build:
@@ -20,21 +20,25 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2 
-      - name: Deploy in EC2
-        env:
-            PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY  }}
-            HOSTNAME : ${{ secrets.HOSTNAME  }}
-            USER_NAME : ${{ secrets.USER_NAME  }}
-            
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      - name: Deploy application
+        id: deployApplication
+        # Wee call the aws deploy command, get the deployment id and store it in the output steps
+        # https://stackoverflow.com/questions/66381595/trying-to-parse-json-output-in-a-github-action
         run: |
-          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
-          
-            cd /home/ubuntu/backend &&
-            git checkout main &&
-            git fetch --all &&
-            git reset --hard origin/main &&
-            git pull origin main &&
-            docker compose -f docker-compose.prod.yml up -d --build '
+            deploymentId=$( aws deploy create-deployment \
+              --application-name cd-backend \
+              --deployment-config-name CodeDeployDefault.OneAtATime \
+              --deployment-group-name CodeDeployGitHubDemo-DepGrp \
+              --description "Automatic deployment of ${{github.sha}}" \
+              --github-location repository=CtrlAltSupr-Dev/backend,commitId=${{github.sha}} | jq -r '.deploymentId' )
+            echo "deploymentId=$deploymentId" >> $GITHUB_OUTPUT
+      - name: Wait until deployment is done
+        run: aws deploy wait deployment-successful --deployment-id ${{steps.deployApplication.outputs.deploymentId}}
 
       
