@@ -8,9 +8,9 @@ class RegistrationForm(UserCreationForm):
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        print(f"-> Email: {email}")
-        if email and not email.endswith('@gmail.com'):
-            raise ValidationError("El correo debe ser de extensión @uc.cl")
+        if email:
+            if not (email.endswith('@uc.cl') or email.endswith('@ing.puc.cl')):
+                raise ValidationError("El correo debe ser de extensión válida.")
         return email
 
     class Meta:

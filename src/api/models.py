@@ -1,9 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-
 class Teacher(models.Model):
-    # Todo: has_many courses
+    # TODO: has_many courses
     name = models.CharField("Name", max_length=240)
     ratingOrganized = models.IntegerField()
     ratingCommunication = models.IntegerField()
@@ -22,7 +21,9 @@ class Course(models.Model):
     initials = models.CharField("Name", max_length=240)
     teachers = models.ManyToManyField('Teacher')
 
-
+    def __str__(self):
+        return self.name
+      
 class CustomUser(AbstractUser):
     email_verified = models.BooleanField(default=False)
     groups = models.ManyToManyField(
@@ -39,3 +40,17 @@ class CustomUser(AbstractUser):
         help_text='Specific permissions for this user.',
         verbose_name='user permissions',
     )
+
+class Review(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    
+    ratingOrganization = models.FloatField()
+    ratingClass = models.FloatField()
+    ratingMaterial = models.FloatField()
+    comment = models.TextField("Comment")
+    addedDate = models.DateField("Added Date", auto_now_add=True)
+
+    def __str__(self):
+        return f"User:{self.user.id} | {self.course.name}"
