@@ -15,6 +15,12 @@ jobs:
       - name: Checkout GitCode
         uses: actions/checkout@v2
 
+      - name: Set up Docker Compose
+        run: |
+          DOCKER_COMPOSE_VERSION=2.10.2  # Specify the desired Docker Compose version here
+          sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+
       - name: Run Docker Compose and tests
         run: docker-compose -f docker-compose.yml up -d --build
       
