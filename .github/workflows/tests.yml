@@ -1,0 +1,19 @@
+name: Tests
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths-ignore:
+      - '**.md'
+      - 'eslintrc.js'
+  push:
+jobs:
+  Test:
+    runs-on: ubuntu-latest
+    if: ${{ !github.event.pull_request.draft }}
+    steps:
+      - name: Checkout GitCode
+        uses: actions/checkout@v2
+
+      - name: Run Test
+        run: "echo tests"
