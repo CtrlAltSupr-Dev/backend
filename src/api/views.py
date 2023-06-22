@@ -21,6 +21,13 @@ from .models import CustomUser
 from .models import Teacher
 from .serializers import *
 
+def home(request):
+    message = {
+        'success': True,
+        'message': '¡Éxito! Funcionando correctamente.'
+    }
+    return JsonResponse(message)
+
 
 @api_view(['GET'])
 def api_greet(request):
@@ -40,7 +47,6 @@ def register(request):
             user.save()
 
             current_site = get_current_site(request)
-            print(f"current_site: {current_site}")
             mail_subject = 'Activate your account'
 
             # Renderizar el contenido del correo electrónico en formato HTML
@@ -99,18 +105,14 @@ def login_view(request):
     if request.method == 'POST':
         username = request.data["username"]
         password = request.data["password"]
-        print(f"username: {username}")
-        print(f"password: {password}")
-        print(f"request.data: {request.data}")
         user = authenticate(request, username=username, password=password)
-        print(f"user: {user}")
         if user is not None:
             if user.is_active == False:
                 return JsonResponse({'error': 'La cuenta no está activa.'}, status=401)
             login(request, user)
             return JsonResponse({'user_id': user.id})
         else:
-            return JsonResponse({'error': 'Credenciales inválidas.', 'request' : request.data}, status=401)
+            return JsonResponse({'error': 'Credenciales inválidas.'}, status=401)
     else:
         return JsonResponse({'error': 'Método no permitido.'}, status=405)
     
