@@ -20,3 +20,9 @@ jobs:
       
       - name: Wait for the service to be ready
         run: docker ps
+
+      - name: Test1
+        run: ls
+
+      - name: Run tests
+        run: docker compose exec backend python3 src/manage.py test api
