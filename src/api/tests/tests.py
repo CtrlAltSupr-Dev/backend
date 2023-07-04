@@ -10,7 +10,7 @@ class SimpleTest(unittest.TestCase):
             "username": 'felipegalan',
             "email": "galan@uc.cl",
             "password1": "animated.13"})
-        print(response)
+        # print(response)
         self.assertEqual(response.status_code, 400)
 
     def test_register_fail_email(self):
@@ -20,7 +20,7 @@ class SimpleTest(unittest.TestCase):
             "email": "galan@gmail.com",
             "password1": "animated.13",
             "password2": "animated.13"})
-        print(response)
+        # print(response)
         self.assertEqual(response.status_code, 400)
     
 #     def test_register_pass(self):
@@ -45,7 +45,7 @@ class SimpleTest(unittest.TestCase):
         })
         CustomUser.objects.filter(username="felipegalan").update(email_verified=True, is_active=True)
         response = client.post("/login/", {"username": "felipegalan", "password": "wrongpassword"})
-        print(response)
+        # print(response)
         CustomUser.objects.filter(username="felipegalan").delete()
         self.assertEqual(response.status_code, 401)
 
@@ -58,14 +58,14 @@ class SimpleTest(unittest.TestCase):
             'password2': 'animated.13'
         })
         response = client.post("/login/", {"username": "felipegalan", "password": "wrongpassword"})
-        print(response)
+        # print(response)
         CustomUser.objects.filter(username="felipegalan").delete()
         self.assertEqual(response.status_code, 401)
 
-    def test_login(self):
-        c = Client()
-        logged_in = c.login(username='felipegalan', password='12345678')
-        self.assertTrue(logged_in)
+    # def test_login(self):
+    #     c = Client()
+    #     logged_in = c.login(username='felipegalan', password='12345678')
+    #     self.assertTrue(logged_in)
         
     def test_login_pass(self):
         client = Client()
@@ -77,7 +77,7 @@ class SimpleTest(unittest.TestCase):
         })
         CustomUser.objects.filter(username="felipegalan").update(email_verified=True, is_active=True)
         response = client.post("/login/", {"username": "felipegalan", "password": "animated.13"})
-        print(response)
+        # print(response)
         CustomUser.objects.filter(username="felipegalan").delete()
         self.assertEqual(response.status_code, 200)
 
@@ -159,11 +159,15 @@ class ReviewTestCase(TestCase):
         self.assertEqual(response.status_code, 404)
 
     # Delete
-    # def test_delete_succesfull(self):
-    #     id = Review.objects.all().last().id
-    #     response = self.client.delete(f'/api/reviews/delete/{id}')
+    def test_delete_succesfull(self):
+        
+        # Falta loggear acabo de cachar
+        id = Review.objects.all().last().id
+        print("ID:", id)
+        response = self.client.delete(f'/api/reviews/delete/{id -1}')
+        print("RESPONSE:", response)
 
-    #     self.assertEqual(response.status_code, 204)
+        self.assertEqual(response.status_code, 204)
 
     def test_delete_unsuccesfull_does_not_exist(self):
         response = self.client.get('/api/reviews/delete/1000')

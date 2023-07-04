@@ -42,6 +42,7 @@ def delete_review(request, pk=None):
         data = Review.objects.get(pk=pk)
     except Review.DoesNotExist:
         return Response({"mensaje": "Review does not exist"}, status=404)
+    # Checkear si wea es de usuario o es admin
     data.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -52,6 +53,8 @@ def update_review(request, pk=None):
         data = Review.objects.get(pk=pk)
     except Review.DoesNotExist:
         return Response({"mensaje": "Review does not exist"}, status=404)
+    
+    # Checkear si wea es de usuario o es admin
     
     serializer = ReviewSerializer(data, data=request.data, partial=True)
     if serializer.is_valid():
