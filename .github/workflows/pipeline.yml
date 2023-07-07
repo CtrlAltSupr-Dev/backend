@@ -1,6 +1,8 @@
 name: Push to AWS (EC2)
 
 on:
+  pull_request:
+    types: [opened, ready_for_review, synchronize, reopened]
   workflow_dispatch:
     inputs:
       logLevel:
