@@ -1,8 +1,6 @@
 name: Push to AWS (EC2)
 
 on:
-  pull_request:
-    types: [opened, ready_for_review, synchronize, reopened]
   workflow_dispatch:
     inputs:
       logLevel:
@@ -35,4 +33,8 @@ jobs:
           username: ${{ secrets.USERNAME }}
           script: |
             cd ~/${{ secrets.TARGET_DIR }}
-            ls
+            git pull
+            docker-compose stop
+            docker-compose build
+            docker-compose up -d
+            docker compose -f docker-compose.prod.yml up -d --build
