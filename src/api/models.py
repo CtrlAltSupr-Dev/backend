@@ -51,7 +51,13 @@ class Review(models.Model):
     ratingMaterial = models.FloatField()
     comment = models.TextField("Comment")
     addedDate = models.DateField("Added Date", auto_now_add=True)
-    approved = models.BooleanField(default=False)
+    
+    APPROVAL_CHOICES = (
+        (0, 'Pending'),
+        (1, 'Approved'),
+        (2, 'Rejected'),
+    )
+    approved = models.IntegerField(choices=APPROVAL_CHOICES, default=0)
 
     def __str__(self):
         return f"User:{self.user.id} | {self.course.name}"
