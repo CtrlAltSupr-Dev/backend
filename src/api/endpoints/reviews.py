@@ -1,6 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
+import json
 
 from ..serializers import *
 
@@ -27,7 +28,9 @@ def get_review(request, pk=None):
 
 @api_view(['POST'])
 def create_review(request):
-    serializer = ReviewSerializer(data=request.data)
+    data = request.data
+    data["approved"] = False
+    serializer = ReviewSerializer(data=data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data,status=status.HTTP_201_CREATED)
