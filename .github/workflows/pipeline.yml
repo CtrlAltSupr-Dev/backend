@@ -1,5 +1,7 @@
 name: Push to AWS (EC2)
 
+# Manual dispatches are not available still
+
 on:
   pull_request:
     types: [opened, ready_for_review, synchronize, reopened]
