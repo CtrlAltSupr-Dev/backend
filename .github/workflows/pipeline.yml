@@ -3,9 +3,6 @@ name: Push to AWS (EC2)
 on:
   pull_request:
     types: [opened, ready_for_review, synchronize, reopened]
-  push:
-    branches:
-      - main
 
 jobs:
   deploy:
@@ -25,39 +22,3 @@ jobs:
           script: |
             cd ~/${{ secrets.TARGET_DIR }}
             echo ls
-
-
-
-# jobs:
-#  build:
-#    runs-on: ubuntu-latest
-#    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-#      - uses: actions/checkout@v3
-#      - name: Build the docker_compose
-#        run: docker-compose up -d --build
-#
-#  Deploy:
-#    needs: build
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - uses: actions/checkout@v2 
-#      - name: Deploy in EC2
-#        env:
-#            PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY  }}
-#            HOSTNAME : ${{ secrets.HOSTNAME  }}
-#            USER_NAME : ${{ secrets.USER_NAME  }}
-#            
-#        run: |
-#          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-#          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
-#          
-#            cd /home/ubuntu/backend &&
-#           git checkout main &&
-#            git fetch --all &&
-#            git reset --hard origin/main &&
-#            git pull origin main &&
-#            docker compose -f docker-compose.prod.yml up -d --build '
-
-      
