@@ -28,9 +28,7 @@ def get_review(request, pk=None):
 
 @api_view(['POST'])
 def create_review(request):
-    data = request.data
-    data["approved"] = False
-    serializer = ReviewSerializer(data=data)
+    serializer = ReviewSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data,status=status.HTTP_201_CREATED)
