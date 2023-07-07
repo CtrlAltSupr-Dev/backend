@@ -11,10 +11,10 @@ jobs:
 
     steps:
       - name: Checkout the files
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Clone files to server and initiate docker container
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v0.1.10
         with:
           key: ${{ secrets.EC2_SSH_KEY }}
           host: ${{ secrets.HOST_DNS }}
