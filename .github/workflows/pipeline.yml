@@ -1,7 +1,5 @@
 name: Push to AWS (EC2)
 
-# Manual dispatches are not available still
-
 on:
   pull_request:
     types: [opened, ready_for_review, synchronize, reopened]
@@ -37,4 +35,4 @@ jobs:
           username: ${{ secrets.USERNAME }}
           script: |
             cd ~/${{ secrets.TARGET_DIR }}
-            echo ls
+            ls
