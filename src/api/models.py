@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db.models import Avg
 
 class Teacher(models.Model):
     # TODO: has_many courses
@@ -9,6 +10,17 @@ class Teacher(models.Model):
     ratingMaterial = models.IntegerField()
     addedDate = models.DateField("Added Date", auto_now_add=True)
     courses = models.ManyToManyField('Course')
+
+    def update_ratings(self):
+        reviews = self.review_set.filter(approved=0)
+        average_organization = reviews.aggregate(Avg('ratingOrganization'))['ratingOrganization__avg']
+        average_class = reviews.aggregate(Avg('ratingClass'))['ratingClass__avg']
+        average_material = reviews.aggregate(Avg('ratingMaterial'))['ratingMaterial__avg']
+
+        self.ratingOrganized = average_organization if average_organization else 0
+        self.ratingCommunication = average_class if average_class else 0
+        self.ratingMaterial = average_material if average_material else 0
+        self.save()
 
     def __str__(self):
         return self.name
@@ -60,4 +72,4 @@ class Review(models.Model):
     approved = models.IntegerField(choices=APPROVAL_CHOICES, default=0)
 
     def __str__(self):
-        return f"User:{self.user.id} | {self.course.name}"
+        return f"User:{self.user.id} | {self.course.name} | {self.teacher.name}"
