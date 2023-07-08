@@ -54,10 +54,10 @@ class SimpleTest(unittest.TestCase):
         client.post("/register/", {
             'username': 'felipegalan',
             'email': 'galan@uc.cl',
-            'password1': 'animated.13',
-            'password2': 'animated.13'
+            'password1': 'animated.11',
+            'password2': 'animated.11'
         })
-        response = client.post("/login/", {"username": "felipegalan", "password": "wrongpassword"})
+        response = client.post("/login/", {"username": "felipegalan", "password": "animated.13"})
         print(response)
         CustomUser.objects.filter(username="felipegalan").delete()
         self.assertEqual(response.status_code, 401)
