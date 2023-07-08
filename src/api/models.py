@@ -3,7 +3,6 @@ from django.contrib.auth.models import AbstractUser
 from django.db.models import Avg
 
 class Teacher(models.Model):
-    # TODO: has_many courses
     name = models.CharField("Name", max_length=240)
     ratingOrganized = models.IntegerField()
     ratingCommunication = models.IntegerField()
@@ -27,7 +26,6 @@ class Teacher(models.Model):
 
 
 class Course(models.Model):
-    # TODO: has_many Teachers
     name = models.CharField("Name", max_length=240)
     description = models.TextField("Description")
     initials = models.CharField("Name", max_length=240)

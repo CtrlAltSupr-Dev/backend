@@ -1,7 +1,6 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
-import json
 
 from ..serializers import *
 
@@ -10,6 +9,8 @@ from ..serializers import *
 def get_reviews(request):
     try:
         data = Review.objects.all()
+        user = request.user
+        print(user)
     except Review.DoesNotExist:
         return Response({"mensaje": "There are no reviews yet"}, status=404)
     serializer = ReviewSerializer(data, context={'request': request}, many=True)
@@ -39,8 +40,11 @@ def create_review(request):
 @api_view(['DELETE'])
 def delete_review(request, pk=None):
     # Revisar que el usuario que hace la petición sea el mismo que creó el review
+    user = request.user
     try:
         review = Review.objects.get(pk=pk)
+        if (review.user.id != user.id):
+            return Response({"mensaje": "You are not the owner of this review"}, status=403)
     except Review.DoesNotExist:
         return Response({"mensaje": "Review does not exist"}, status=404)
     teacher = review.teacher
@@ -52,8 +56,12 @@ def delete_review(request, pk=None):
 @api_view(['PUT'])
 def update_review(request, pk=None):
     # Revisar que el usuario que hace la petición sea el mismo que creó el review
+    user = request.user
+    print("USER:", user.id, "\n")
     try:
         review = Review.objects.get(pk=pk)
+        if (review.user.id != user.id):
+            return Response({"mensaje": "You are not the owner of this review"}, status=403)
     except Review.DoesNotExist:
         return Response({"mensaje": "Review does not exist"}, status=404)
     

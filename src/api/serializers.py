@@ -19,11 +19,6 @@ class CourseSerializer(serializers.ModelSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    # user = serializers.PrimaryKeyRelatedField(read_only=True)
-    # teacher = serializers.PrimaryKeyRelatedField(read_only=True)
-    # course = serializers.PrimaryKeyRelatedField(read_only=True)
-
     class Meta:
         model = Review
-        # fields = ('pk', 'user', 'teacher', 'course', 'ratingOrganization', 'ratingClass', 'ratingMaterial', 'comment', 'addedDate')
         fields = '__all__'
