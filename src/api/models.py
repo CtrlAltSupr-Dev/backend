@@ -12,7 +12,7 @@ class Teacher(models.Model):
     courses = models.ManyToManyField('Course')
 
     def update_ratings(self):
-        reviews = self.review_set.filter(approved=0)
+        reviews = self.review_set.filter(approved=1)
         average_organization = reviews.aggregate(Avg('ratingOrganization'))['ratingOrganization__avg']
         average_class = reviews.aggregate(Avg('ratingClass'))['ratingClass__avg']
         average_material = reviews.aggregate(Avg('ratingMaterial'))['ratingMaterial__avg']
