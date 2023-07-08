@@ -1,0 +1,5 @@
+BUSCACURSOS_URL = "https://buscacursos.uc.cl"
+CATALOGO_URL = "https://catalogo.uc.cl"
+LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+NUMBERS = "0123456789"
+PERIOD = "2023-1"
