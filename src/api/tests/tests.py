@@ -52,8 +52,8 @@ class SimpleTest(unittest.TestCase):
     def test_login_fail_confirmation(self):
         client = Client()
         client.post("/register/", {
-            'username': 'felipegalan',
-            'email': 'galan@uc.cl',
+            'username': 'felipegala',
+            'email': 'gala@uc.cl',
             'password1': 'animated.11',
             'password2': 'animated.11'
         })
