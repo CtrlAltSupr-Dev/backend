@@ -60,7 +60,7 @@ class SimpleTest(unittest.TestCase):
         response = client.post("/login/", {"username": "felipegalan", "password": "wrongpassword"})
         print(response)
         CustomUser.objects.filter(username="felipegalan").delete()
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 401)
 
     def test_login_pass(self):
         client = Client()
