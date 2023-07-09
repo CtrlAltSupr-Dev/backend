@@ -11,7 +11,7 @@ def create_custom_user(apps, schema_editor):
         password=make_password("Seba22##"),
         is_superuser=True,
         is_staff=True,
-        email="sjolivares@uc.cl",
+        email="sjolivare@uc.cl",
         is_active=True
     )
     user.save()
