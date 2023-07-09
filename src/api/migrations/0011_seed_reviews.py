@@ -2,19 +2,6 @@
 
 from django.db import migrations
 
-def create_custom_user(apps, schema_editor):
-    '''User = apps.get_model('api', 'CustomUser')
-    user = User(
-        email_verified=True,
-        username="ssoliva",
-        password=make_password("Seba22##"),
-        is_superuser=True,
-        is_staff=True,
-        email="sjolivares@uc.cl",
-        is_active=True
-    )
-    user.save()'''
-
 def create_test_reviews(apps, schema_editor):
     Review = apps.get_model('api', 'Review')
     Review(ratingOrganization=3, ratingClass=4, ratingMaterial=5, comment="Muy ordenado y cercano", course_id=1, teacher_id=1, user_id=1).save()
@@ -30,6 +17,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(create_custom_user),
         migrations.RunPython(create_test_reviews)
     ]
