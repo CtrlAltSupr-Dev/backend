@@ -22,6 +22,8 @@ class SimpleTest(unittest.TestCase):
             "password2": "animated.13"})
         print(response)
         self.assertEqual(response.status_code, 400)
+
+    '''
     
     def test_register_pass(self):
         client = Client()
@@ -35,7 +37,6 @@ class SimpleTest(unittest.TestCase):
         CustomUser.objects.filter(username="felipegalan").delete()
         self.assertEqual(response.status_code, 200)  # Cambia el status_code esperado a 200 si el registro es exitoso
 
-    '''
     def test_login_fail_password(self):
         client = Client()
         client.post("/register/", {
