@@ -11,14 +11,14 @@ class Teacher(models.Model):
     courses = models.ManyToManyField('Course')
 
     def update_ratings(self):
-        reviews = self.review_set.filter(approved=0)
+        reviews = self.review_set.filter(approved=1)
         average_organization = reviews.aggregate(Avg('ratingOrganization'))['ratingOrganization__avg']
         average_class = reviews.aggregate(Avg('ratingClass'))['ratingClass__avg']
         average_material = reviews.aggregate(Avg('ratingMaterial'))['ratingMaterial__avg']
 
-        self.ratingOrganized = average_organization if average_organization else 0
-        self.ratingCommunication = average_class if average_class else 0
-        self.ratingMaterial = average_material if average_material else 0
+        self.ratingOrganized = round(average_organization) if average_organization else 0
+        self.ratingCommunication = round(average_class) if average_class else 0
+        self.ratingMaterial = round(average_material) if average_material else 0
         self.save()
 
     def __str__(self):
@@ -56,9 +56,9 @@ class Review(models.Model):
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     
-    ratingOrganization = models.FloatField()
-    ratingClass = models.FloatField()
-    ratingMaterial = models.FloatField()
+    ratingOrganization = models.IntegerField()
+    ratingClass = models.IntegerField()
+    ratingMaterial = models.IntegerField()
     comment = models.TextField("Comment")
     addedDate = models.DateField("Added Date", auto_now_add=True)
     

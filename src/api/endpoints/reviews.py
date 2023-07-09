@@ -57,7 +57,7 @@ def delete_review(request, pk=None):
 def update_review(request, pk=None):
     # Revisar que el usuario que hace la petición sea el mismo que creó el review
     user = request.user
-    print("USER:", user.id, "\n")
+    # print("USER:", user.id, "\n")
     try:
         review = Review.objects.get(pk=pk)
         if (review.user.id != user.id):
