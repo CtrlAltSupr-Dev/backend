@@ -3,7 +3,6 @@ from django.contrib.auth.models import AbstractUser
 from django.db.models import Avg
 
 class Teacher(models.Model):
-    # TODO: has_many courses
     name = models.CharField("Name", max_length=240)
     ratingOrganized = models.IntegerField()
     ratingCommunication = models.IntegerField()
@@ -17,9 +16,9 @@ class Teacher(models.Model):
         average_class = reviews.aggregate(Avg('ratingClass'))['ratingClass__avg']
         average_material = reviews.aggregate(Avg('ratingMaterial'))['ratingMaterial__avg']
 
-        self.ratingOrganized = average_organization if average_organization else 0
-        self.ratingCommunication = average_class if average_class else 0
-        self.ratingMaterial = average_material if average_material else 0
+        self.ratingOrganized = round(average_organization) if average_organization else 0
+        self.ratingCommunication = round(average_class) if average_class else 0
+        self.ratingMaterial = round(average_material) if average_material else 0
         self.save()
 
     def __str__(self):
@@ -27,7 +26,6 @@ class Teacher(models.Model):
 
 
 class Course(models.Model):
-    # TODO: has_many Teachers
     name = models.CharField("Name", max_length=240)
     description = models.TextField("Description")
     initials = models.CharField("Name", max_length=240)
@@ -58,9 +56,9 @@ class Review(models.Model):
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     
-    ratingOrganization = models.FloatField()
-    ratingClass = models.FloatField()
-    ratingMaterial = models.FloatField()
+    ratingOrganization = models.IntegerField()
+    ratingClass = models.IntegerField()
+    ratingMaterial = models.IntegerField()
     comment = models.TextField("Comment")
     addedDate = models.DateField("Added Date", auto_now_add=True)
     
