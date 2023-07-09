@@ -62,7 +62,6 @@ class SimpleTest(unittest.TestCase):
         print(response)
         CustomUser.objects.filter(username="felipegalan").delete()
         self.assertEqual(response.status_code, 401)
-    '''
 
     def test_login_pass(self):
         client = Client()
@@ -77,3 +76,5 @@ class SimpleTest(unittest.TestCase):
         print(response)
         CustomUser.objects.filter(username="felipegalan").delete()
         self.assertEqual(response.status_code, 200)
+
+    '''
