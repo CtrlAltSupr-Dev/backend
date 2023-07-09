@@ -21,13 +21,15 @@ def get_user(request, pk=None):
 
 @api_view(['PUT'])
 def update_user(request, pk=None):
-    user = request.user
+    # user = request.user
     try:
-        review = CustomUser.objects.get(pk=pk)
+        user = CustomUser.objects.get(pk=pk)
+        # if (review.user.id != user.id):
+        #     return Response({"mensaje": "You are not the owner of this review"}, status=403)
     except CustomUser.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response({"mensaje": "User does not exist"}, status=404)
     
-    serializer = CustomUserSerializer(user, data=request.data, context={'request': request}, partial=True)
+    serializer = CustomUserSerializer(user, data=request.data, partial=True)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)
