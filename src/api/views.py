@@ -118,3 +118,24 @@ def login_view(request):
     else:
         return JsonResponse({'error': 'Método no permitido.'}, status=405)
     
+@api_view(["POST"])
+@csrf_exempt
+def register_superuser(request):
+    if request.method == 'POST':
+        form = RegistrationForm(request.data)
+        if form.is_valid():
+            user = form.save()
+            user.is_active = True
+            user.mail_verified = True
+            user.is_superuser = True
+            user.is_staff = True
+            user.save()
+
+            return JsonResponse({'message': 'Superuser registration successful.'})
+        else:
+            errors = form.errors.as_json()
+            return JsonResponse({'error': errors}, status=400)
+    else:
+        form = RegistrationForm()
+
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
