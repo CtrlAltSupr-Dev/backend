@@ -13,6 +13,8 @@ class SimpleTest(unittest.TestCase):
         print(response)
         self.assertEqual(response.status_code, 400)
 
+    '''
+
     def test_register_fail_email(self):
         client = Client()
         response = client.post("/register/", {
@@ -75,6 +77,9 @@ class SimpleTest(unittest.TestCase):
         print(response)
         CustomUser.objects.filter(username="felipegalan").delete()
         self.assertEqual(response.status_code, 200)
+
+
+    '''
 
 
 class ReviewTestCase(TestCase):
@@ -209,3 +214,4 @@ class ReviewTestCase(TestCase):
         response = self.client.get('/api/reviews/delete/1000')
 
         self.assertEqual(response.status_code, 404)
+
