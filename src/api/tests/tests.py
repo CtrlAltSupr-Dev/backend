@@ -106,47 +106,6 @@ class ReviewTestCase(TestCase):
         response = self.client.post('/api/reviews/create', data, content_type='application/json')
         self.assertEqual(response.status_code, 400)
 
-    def test_create_succesfull_re_calculates_ratings(self):
-        data_1 = {
-            'course': self.course.id,
-            'teacher': self.teacher.id,
-            'ratingOrganization': 5,
-            'ratingClass': 2,
-            'ratingMaterial': 5,
-            'user': self.user.id,
-            'comment': 'Increible',
-            'approved': 1
-        }
-        data_2 = {
-            'course': self.course.id,
-            'teacher': self.teacher.id,
-            'ratingOrganization': 1,
-            'ratingClass': 1,
-            'ratingMaterial': 1,
-            'user': self.user.id,
-            'comment': 'Terrible',
-            'approved': 1
-        }
-        data_3 = {
-            'course': self.course.id,
-            'teacher': self.teacher.id,
-            'ratingOrganization': 2,
-            'ratingClass': 1,
-            'ratingMaterial': 5,
-            'user': self.user.id,
-            'comment': 'Tiene sus fuertes',
-            'approved': 1
-        }
-        self.client.post('/api/reviews/create', data_1, content_type='application/json')
-        self.client.post('/api/reviews/create', data_2, content_type='application/json')
-        self.client.post('/api/reviews/create', data_3, content_type='application/json')
-
-        self.teacher.refresh_from_db() 
-
-        self.assertEqual(self.teacher.ratingMaterial, 4)
-        self.assertEqual(self.teacher.ratingOrganized, 3)
-        self.assertEqual(self.teacher.ratingCommunication, 1)
-
     # Get All
     def test_get_all_succesfull(self):
         Review(ratingOrganization=5, ratingClass=5, ratingMaterial=5, comment="Increible este profesor", course_id=4, teacher_id=4, user_id=1).save()
@@ -196,8 +155,25 @@ class ReviewTestCase(TestCase):
 
         response = self.client.patch(f'/api/reviews/update/1000', data, content_type='application/json')
         self.assertEqual(response.status_code, 404)
+
+    def test_update_succesfull_re_calculates_ratings(self):
+        Review(ratingOrganization=5, ratingClass=2, ratingMaterial=5, comment="Increible", course_id=self.course.id, teacher_id=self.teacher.id, user_id=self.user.id, approved=1).save()
+        Review(ratingOrganization=1, ratingClass=1, ratingMaterial=1, comment="Terrible", course_id=self.course.id, teacher_id=self.teacher.id, user_id=self.user.id, approved=1).save()
+        Review(ratingOrganization=2, ratingClass=1, ratingMaterial=5, comment="Tiene sus fuertes", course_id=self.course.id, teacher_id=self.teacher.id, user_id=self.user.id).save()
+        id = Review.objects.all().last().id
+
+        data_3 = {
+            'approved': 1
+        }
+        response = self.client.put(f'/api/reviews/update/{id}', data_3, content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+
+        self.teacher.refresh_from_db()
+
+        self.assertEqual(self.teacher.ratingOrganized, 3)
+        self.assertEqual(self.teacher.ratingCommunication, 1)
+        self.assertEqual(self.teacher.ratingMaterial, 4)
     
-    # Verificar que se calculan bien los ratings
 
     # Delete
     # def test_delete_succesfull(self):

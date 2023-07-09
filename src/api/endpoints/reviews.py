@@ -31,15 +31,14 @@ def get_review(request, pk=None):
 def create_review(request):
     serializer = ReviewSerializer(data=request.data)
     if serializer.is_valid():
-        review = serializer.save()
-        review.teacher.update_ratings()
+        serializer.save()
         return Response(serializer.data,status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-                    
+
 
 @api_view(['DELETE'])
 def delete_review(request, pk=None):
-    user = request.user
+    # user = request.user
     try:
         review = Review.objects.get(pk=pk)
         # if (review.user.id != user.id):
@@ -47,14 +46,16 @@ def delete_review(request, pk=None):
     except Review.DoesNotExist:
         return Response({"mensaje": "Review does not exist"}, status=404)
     teacher = review.teacher
+    approved = review.approved
     review.delete()
-    teacher.update_ratings()
+    if approved == 1:
+        teacher.update_ratings()
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['PUT'])
 def update_review(request, pk=None):
-    user = request.user
+    # user = request.user
     try:
         review = Review.objects.get(pk=pk)
         # if (review.user.id != user.id):
@@ -64,7 +65,7 @@ def update_review(request, pk=None):
     
     serializer = ReviewSerializer(review, data=request.data, partial=True)
     if serializer.is_valid():
-        review.teacher.update_ratings()
         serializer.save()
+        review.teacher.update_ratings()
         return Response(serializer.data)
     return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
