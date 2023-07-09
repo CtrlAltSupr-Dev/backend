@@ -9,8 +9,6 @@ from ..serializers import *
 def get_reviews(request):
     try:
         data = Review.objects.all()
-        user = request.user
-        print(user)
     except Review.DoesNotExist:
         return Response({"mensaje": "There are no reviews yet"}, status=404)
     serializer = ReviewSerializer(data, context={'request': request}, many=True)

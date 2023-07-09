@@ -136,17 +136,16 @@ class ReviewTestCase(TestCase):
         self.assertEqual(response.status_code, 404)
 
     # Update
-    # def test_update_succesfull(self):
-    #     user = self.client.login(username='felipegalan', password='12345678')
-    #     Review(ratingOrganization=5, ratingClass=5, ratingMaterial=5, comment="Increible este profesor", course_id=4, teacher_id=4, user_id=1).save()
-    #     id = Review.objects.all().last().id
-    #     data = {
-    #         'comment': 'Increible este profesor, pero ahora con una reseña actualizada',
-    #     }
+    def test_update_succesfull(self):
+        Review(ratingOrganization=5, ratingClass=5, ratingMaterial=5, comment="Increible este profesor", course_id=4, teacher_id=4, user_id=1).save()
+        id = Review.objects.all().last().id
+        data = {
+            'comment': 'Increible este profesor, pero ahora con una reseña actualizada',
+        }
 
-    #     response = self.client.patch(f'/api/reviews/update/{id}', data, content_type='application/json')
-    #     self.assertEqual(response.status_code, 204)
-    #     self.assertEqual(response.data["comment"], 'Increible este profesor, pero ahora con una reseña actualizada')
+        response = self.client.put(f'/api/reviews/update/{id}', data, content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["comment"], 'Increible este profesor, pero ahora con una reseña actualizada')
 
     def test_update_unsuccesfull_does_not_exist(self):
         data = {
@@ -176,15 +175,11 @@ class ReviewTestCase(TestCase):
     
 
     # Delete
-    # def test_delete_succesfull(self):
-        
-    #     # Falta loggear acabo de cachar
-    #     id = Review.objects.all().last().id
-    #     print("ID:", id)
-    #     response = self.client.delete(f'/api/reviews/delete/{id -1}')
-    #     print("RESPONSE:", response)
+    def test_delete_succesfull(self):
+        id = Review.objects.all().last().id
+        response = self.client.delete(f'/api/reviews/delete/{id}')
 
-    #     self.assertEqual(response.status_code, 204)
+        self.assertEqual(response.status_code, 204)
 
     def test_delete_unsuccesfull_does_not_exist(self):
         response = self.client.get('/api/reviews/delete/1000')
