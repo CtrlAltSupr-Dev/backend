@@ -4,6 +4,7 @@ from django.db import migrations
 
 def create_custom_user(apps, schema_editor):
     
+    # Fake seed. Si se borra esto, los tests fallan. Por eso se sacó el .save() de este user.
     User = apps.get_model('api', 'CustomUser')
     user = User(
         email_verified=True,
@@ -11,10 +12,9 @@ def create_custom_user(apps, schema_editor):
         password="Seba22##",
         is_superuser=True,
         is_staff=True,
-        email="sjolivare@uc.cl",
+        email="sjolivares@uc.cl",
         is_active=True
     )
-    user.save()
 
 def create_test_reviews(apps, schema_editor):
     Review = apps.get_model('api', 'Review')
