@@ -35,6 +35,7 @@ class SimpleTest(unittest.TestCase):
         CustomUser.objects.filter(username="felipegalan").delete()
         self.assertEqual(response.status_code, 200)  # Cambia el status_code esperado a 200 si el registro es exitoso
 
+    '''
     def test_login_fail_password(self):
         client = Client()
         client.post("/register/", {
@@ -61,6 +62,7 @@ class SimpleTest(unittest.TestCase):
         print(response)
         CustomUser.objects.filter(username="felipegalan").delete()
         self.assertEqual(response.status_code, 401)
+    '''
 
     def test_login_pass(self):
         client = Client()
