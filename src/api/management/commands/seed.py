@@ -28,13 +28,13 @@ class Command(BaseCommand):
                     teacher, _ = Teacher.objects.get_or_create(name=teacher_name, ratingOrganized=0, ratingCommunication=0, ratingMaterial=0)
                     course.teachers.add(teacher)
 
-        last_teacher = Teacher.objects.order_by('-addedDate').last()
-        for teacher in Teacher.objects.all():
-            print(f'teacher {teacher.course_set.all()}')
-        success = last_teacher.course_set.all()
-        print(f'success {success}')
+        # last_teacher = Teacher.objects.order_by('-addedDate').last()
+        # for teacher in Teacher.objects.all():
+        #     print(f'teacher {teacher.course_set.all()}')
+        # success = last_teacher.course_set.all()
+        # print(f'success {success}')
         self.stdout.write(self.style.SUCCESS('Seed data successfully populated'))
-        last_teacher = Teacher.objects.order_by('-addedDate').first()
-        success = last_teacher.course_set.all()
-        self.stdout.write(self.style.SUCCESS(success))
+        # last_teacher = Teacher.objects.order_by('-addedDate').first()
+        # success = last_teacher.course_set.all()
+        # self.stdout.write(self.style.SUCCESS(success))
 
