@@ -146,7 +146,7 @@ class ReviewTestCase(TestCase):
             'comment': 'Increible este profesor, pero ahora con una reseña actualizada'
         }
 
-        response = self.client.patch(f'/api/reviews/update/1000', data, content_type='application/json')
+        response = self.client.put(f'/api/reviews/update/1000', data, content_type='application/json')
         self.assertEqual(response.status_code, 404)
 
     def test_update_succesfull_re_calculates_ratings(self):
@@ -176,7 +176,7 @@ class ReviewTestCase(TestCase):
         self.assertEqual(response.status_code, 204)
 
     def test_delete_unsuccesfull_does_not_exist(self):
-        response = self.client.get('/api/reviews/delete/1000')
+        response = self.client.delete('/api/reviews/delete/1000')
 
         self.assertEqual(response.status_code, 404)
 
