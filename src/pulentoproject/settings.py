@@ -92,7 +92,6 @@ EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'ctrlaltsuprsoftware@gmail.com'
 
 
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
