@@ -23,7 +23,7 @@ def get_course(request, pk=None):
 @api_view(['DELETE'])
 def delete_course(request, pk=None):
     try:
-        course = Course.objects.get(pk={{ pk|safe }})
+        course = Course.objects.get(pk=pk)
     except Course.DoesNotExist:
         return Response({"mensaje": "Course does not exist"}, status=404)
     course.delete()
