@@ -10,7 +10,6 @@ class SimpleTest(unittest.TestCase):
             "username": 'felipegalan',
             "email": "galan@uc.cl",
             "password1": "animated.13"})
-        print(response)
         self.assertEqual(response.status_code, 400)
 
     def test_register_fail_email(self):
@@ -20,7 +19,6 @@ class SimpleTest(unittest.TestCase):
             "email": "galan@gmail.com",
             "password1": "animated.13",
             "password2": "animated.13"})
-        print(response)
         self.assertEqual(response.status_code, 400)
     
     def test_register_pass(self):
@@ -31,7 +29,6 @@ class SimpleTest(unittest.TestCase):
             'password1': 'animated.13',
             'password2': 'animated.13'
         })
-        print(response)
         CustomUser.objects.filter(username="felipegalan").delete()
         self.assertEqual(response.status_code, 200)  # Cambia el status_code esperado a 200 si el registro es exitoso
 
@@ -45,7 +42,6 @@ class SimpleTest(unittest.TestCase):
         })
         CustomUser.objects.filter(username="felipegalan").update(email_verified=True, is_active=True)
         response = client.post("/login/", {"username": "felipegalan", "password": "wrongpassword"})
-        print(response)
         CustomUser.objects.filter(username="felipegalan").delete()
         self.assertEqual(response.status_code, 401)
 
@@ -58,7 +54,6 @@ class SimpleTest(unittest.TestCase):
             'password2': 'animated.13'
         })
         response = client.post("/login/", {"username": "felipegalan", "password": "wrongpassword"})
-        print(response)
         CustomUser.objects.filter(username="felipegalan").delete()
         self.assertEqual(response.status_code, 401)
 
@@ -72,7 +67,6 @@ class SimpleTest(unittest.TestCase):
         })
         CustomUser.objects.filter(username="felipegalan").update(email_verified=True, is_active=True)
         response = client.post("/login/", {"username": "felipegalan", "password": "animated.13"})
-        print(response)
         CustomUser.objects.filter(username="felipegalan").delete()
         self.assertEqual(response.status_code, 200)
 
