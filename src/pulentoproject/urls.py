@@ -36,6 +36,7 @@ urlpatterns = [
     re_path(r'^api/users$', endpoints.get_users),
     re_path(r'^api/users/details/(?P<pk>\d{1,5})$', endpoints.get_user),
     re_path(r'^api/users/update/(?P<pk>\d{1,5})$', endpoints.update_user),
+    re_path(r'^api/users/delete/(?P<pk>\d{1,5})$', endpoints.delete_user),
     path('register/', views.register, name='register'),
     path('register_superuser/', views.register_superuser, name='register_superuser'),
     path('activate/<str:uidb64>/<str:token>/', views.activate_account, name='activate'),
