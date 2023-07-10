@@ -7,15 +7,20 @@ from ..serializers import *
 
 @api_view(['GET'])
 def get_users(request):
-    print("get_users")
-    data = CustomUser.objects.all()
+    try:
+        data = CustomUser.objects.all()
+    except CustomUser.DoesNotExist:
+        return Response({"mensaje": "There are not users yet"}, status=404)
     serializer = CustomUserSerializer(data, context={'request': request}, many=True)
     return Response(serializer.data)
 
 
 @api_view(['GET'])
 def get_user(request, pk=None):
-    data = CustomUser.objects.get(pk=pk)
+    try:
+        data = CustomUser.objects.get(pk=pk)
+    except CustomUser.DoesNotExist:
+        return Response({"mensaje": "User does not exist"}, status=404)
     serializer = CustomUserSerializer(data, context={'request': request})
     return Response(serializer.data)
 

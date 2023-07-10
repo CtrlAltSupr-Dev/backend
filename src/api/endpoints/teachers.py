@@ -7,14 +7,20 @@ from ..serializers import *
 
 @api_view(['GET'])
 def get_teachers(request):
-    data = Teacher.objects.all()
+    try:
+        data = Teacher.objects.all()
+    except Teacher.DoesNotExist:
+        return Response({"mensaje": "There are not teachers yet"}, status=404)
     serializer = TeacherSerializer(data, context={'request': request}, many=True)
     return Response(serializer.data)
 
 
 @api_view(['GET'])
 def get_teacher(request, pk=None):
-    data = Teacher.objects.get(pk=pk)
+    try:
+        data = Teacher.objects.get(pk=pk)
+    except Teacher.DoesNotExist:
+        return Response({"mensaje": "Teacher does not exist"}, status=404)
     serializer = TeacherSerializer(data, context={'request': request})
     return Response(serializer.data)
 
