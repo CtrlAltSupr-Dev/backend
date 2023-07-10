@@ -34,3 +34,12 @@ def update_user(request, pk=None):
         serializer.save()
         return Response(serializer.data)
     return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def delete_user(request, pk=None):
+    try:
+        user = CustomUser.objects.get(pk=pk)
+    except CustomUser.DoesNotExist:
+        return Response({"mensaje": "CustomUser does not exist"}, status=404)
+    user.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
